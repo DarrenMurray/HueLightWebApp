@@ -1,2 +1,2 @@
 # HueLightWebApp
-Template for Philips hue web app.
+Research into philips hue Java sdk.
