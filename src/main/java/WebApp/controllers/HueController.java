@@ -1,6 +1,8 @@
 package WebApp.controllers;
+/**
+ * Created by dmurray on 05/08/2017.
+ **/
 
-import WebApp.models.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,6 @@ public class HueController {
     //================================================================================
     // Public methods
     //================================================================================
-
     @RequestMapping(value = "api/LightsOff", method=POST)
     @ResponseBody
     public String turnOffLights() {
@@ -22,6 +23,16 @@ public class HueController {
         return  m_bridgeService.turnOffAllLights();
     }
 
+    @RequestMapping(value = "api/LightsOn", method=POST)
+    @ResponseBody
+    public String turnOnLights() {
+
+        return  m_bridgeService.turnOnAllLights();
+    }
+
+    //================================================================================
+    // Private variables
+    //================================================================================
     @Autowired
     private BridgeService m_bridgeService;
 }
