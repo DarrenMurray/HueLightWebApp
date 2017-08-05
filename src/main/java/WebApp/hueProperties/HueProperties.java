@@ -18,10 +18,10 @@ import java.util.Properties;
  */
 public final class HueProperties {
 
-    private static final String LAST_CONNECTED_IP   = "LastIPAddress";
-    private static final String USER_NAME           = "WhiteListUsername";
+    private static final String LAST_CONNECTED_IP   = "192.168.1.225";
+    private static final String USER_NAME           = "MPXWYwIZLY5TyAEVnxGEKzB7lBk7ptk0uhHoUhDf";
     private static final String PROPS_FILE_NAME     = "MyHue.properties";
-    private static Properties props=null;
+    private static Properties props= null;
 
     private HueProperties() {
     }
@@ -43,12 +43,12 @@ public final class HueProperties {
      * Returns the stored Whitelist username.  If it doesn't exist we generate a 16 character random string and store this in the properties file.
      */
     public static String getUsername() {
-        String username = props.getProperty(USER_NAME);        
+        String username = USER_NAME;
         return username;
     }
 
     public static String getLastConnectedIP() {
-        return props.getProperty(LAST_CONNECTED_IP);
+        return LAST_CONNECTED_IP;
     }
     
     public static void loadProperties() {

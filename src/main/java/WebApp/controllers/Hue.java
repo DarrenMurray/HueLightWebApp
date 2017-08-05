@@ -1,34 +1,35 @@
 package WebApp.controllers;
 
+/**
+ * Created by dmurray on 05/08/2017.
+ **/
 import java.util.List;
-import java.util.Random;
-
 import WebApp.hueProperties.HueProperties;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
-import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHSDKListener;
 import com.philips.lighting.model.PHBridge;
-import com.philips.lighting.model.PHBridgeResourcesCache;
 import com.philips.lighting.model.PHHueParsingError;
-import com.philips.lighting.model.PHLight;
-import com.philips.lighting.model.PHLightState;
 
 public class Hue {
-
-    private PHHueSDK phHueSDK;
-    private static final int MAX_HUE=65535;
-    private Hue instance;
-
+    //================================================================================
+    // Public methods
+    //================================================================================
     public Hue() {
         this.phHueSDK = PHHueSDK.getInstance();
-        this.instance = this;
+        connectToLastKnownAccessPoint();
     }
 
-    public void findBridges() {
-        phHueSDK = PHHueSDK.getInstance();
-        PHBridgeSearchManager sm = (PHBridgeSearchManager) phHueSDK.getSDKService(PHHueSDK.SEARCH_BRIDGE);
-        sm.search(true, true);
+    public static Hue getInstance(){
+        if(instance == null){
+            instance = new Hue();
+        }
+        return instance;
+    }
+
+    public PHBridge getBridge()
+    {
+     return phHueSDK.getSelectedBridge();
     }
 
     private PHSDKListener listener = new PHSDKListener() {
@@ -78,30 +79,8 @@ public class Hue {
         } 
     };
 
-    public PHSDKListener getListener() {
-        return listener;
-    }
-
-    public void setListener(PHSDKListener listener) {
-        this.listener = listener;
-    }
-
-    public void randomLights() {
-        PHBridge bridge = phHueSDK.getSelectedBridge();
-        PHBridgeResourcesCache cache = bridge.getResourceCache();
-
-        List<PHLight> allLights = cache.getAllLights();
-        Random rand = new Random();
-
-        for (PHLight light : allLights) {
-            PHLightState lightState = new PHLightState();
-            lightState.setHue(rand.nextInt(MAX_HUE));
-            bridge.updateLightState(light, lightState); // If no bridge response is required then use this simpler form.
-        }
-    }
     /**
      * Connect to the last known access point.
-     * This method is triggered by the Connect to Bridge button but it can equally be used to automatically connect to a bridge.
      * 
      */
     public boolean connectToLastKnownAccessPoint() {
@@ -118,4 +97,10 @@ public class Hue {
         return true;
     }
 
+    //================================================================================
+    // Private variables
+    //================================================================================
+    private PHHueSDK phHueSDK;
+    private static final int MAX_HUE=65535;
+    private static Hue instance;
 }
